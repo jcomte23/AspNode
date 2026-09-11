@@ -12,7 +12,16 @@
         <Watch Remove="Assets/**" />
     </ItemGroup>
 
-    <Target Name="BuildFrontend" BeforeTargets="BeforeBuild">
+    <ItemGroup>
+        <FrontendInput Include="Assets/**/*" />
+        <FrontendInput Include="Views/**/*.cshtml" />
+        <FrontendInput Include="package.json;package-lock.json;vite.config.js" />
+    </ItemGroup>
+
+    <Target Name="BuildFrontend" BeforeTargets="BeforeBuild"
+            Condition="'$(SkipFrontend)' != 'true'"
+            Inputs="@(FrontendInput)"
+            Outputs="wwwroot/dist/main.css">
         <Exec Command="npm ci" Condition="!Exists('node_modules')" />
         <Exec Command="npm run build" />
     </Target>

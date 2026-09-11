@@ -143,7 +143,18 @@ clásicos.
 ```
 
 ```xml
-<Target Name="BuildFrontend" BeforeTargets="BeforeBuild">
+<ItemGroup>
+  <FrontendInput Include="Assets/**/*" />
+  <FrontendInput Include="Views/**/*.cshtml" />
+  <FrontendInput Include="package.json;package-lock.json;vite.config.js" />
+</ItemGroup>
+```
+
+```xml
+<Target Name="BuildFrontend" BeforeTargets="BeforeBuild"
+        Condition="'$(SkipFrontend)' != 'true'"
+        Inputs="@(FrontendInput)"
+        Outputs="wwwroot/dist/main.css">
   <Exec Command="npm ci" Condition="!Exists('node_modules')" />
   <Exec Command="npm run build" />
 </Target>
@@ -153,6 +164,27 @@ clásicos.
 corren después de los `DependsOnTargets` de `Build`, y ahí adentro está
 `CoreBuild`, donde el SDK arma el manifiesto de static assets. El CSS
 llegaría tarde y el manifiesto quedaría sin él.
+
+**Build incremental.** Con `Inputs`/`Outputs`, MSBuild compara fechas y omite
+el target cuando `main.css` ya es más nuevo que todas las entradas. Cambias
+un `.cs` y el front ni se toca; cambias una vista, algo de `Assets/` o el
+`package.json` y sí recompila. Las vistas van en `FrontendInput` porque
+Tailwind escanea las clases ahí.
+
+Sin esto, cada rebuild de `dotnet watch` por un cambio en C# lanza otro
+`vite build` sobre el mismo `wwwroot/dist` que ya está escribiendo
+`npm run dev`, y en la ventana en que ambos escriben `main.css` puedes
+quedar con un archivo truncado. Raro, pero difícil de diagnosticar.
+
+Para verificar que funciona, `dotnet build -v n` debe mostrar
+*"Se omitirá el destino BuildFrontend porque todos los archivos de salida
+están actualizados"* cuando no hay cambios de front.
+
+**`SkipFrontend`** es un escape manual para casos puntuales:
+`dotnet build -p:SkipFrontend=true`. No es el modo de trabajo diario. Y si
+el CI no tiene Node, lo correcto es que el build truene, no callarlo con el
+flag: un build que "pasa" sin Node despliega la app con el CSS de hace tres
+commits. La solución es instalar Node en el pipeline.
 
 El `Content Remove` no es opcional: sin eso el SDK rastrea los miles de
 archivos de `node_modules` en cada build y se arrastra.
