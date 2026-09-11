@@ -1,0 +1,4 @@
+@import "tailwindcss" source(none);
+
+@source "../../Views";
+/*@source "../../Areas"; solo prendelo si es necesario*/
