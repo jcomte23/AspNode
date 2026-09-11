@@ -239,10 +239,58 @@ npm run dev
 dotnet watch run
 ```
 
-Para verificar que el fingerprinting está activo, ver el código fuente en el
-navegador: el `href` debe salir como `/dist/main.a7f3c9.css`. Si sale tal cual
-`/dist/main.css`, falta encadenar `.WithStaticAssets()` a `MapControllerRoute`
-en el `Program.cs`.
+## Fingerprinting y caché en Development
+
+El fingerprinting de `MapStaticAssets` **solo existe en publish**. En
+Development el `href` sale tal cual `/dist/main.css`, y eso es normal; no
+significa que falte `.WithStaticAssets()`. Para verificarlo:
+
+```bash
+dotnet publish -c Release -o /tmp/pub
+grep main /tmp/pub/AspNode.Web.staticwebassets.endpoints.json
+```
+
+Deben aparecer rutas `dist/main.{hash}.css` con `max-age=31536000, immutable`.
+
+Lo que sí hay en Development es un problema de caché. `MapStaticAssets`
+sirve `dist/main.css` con `Cache-Control: no-cache` y un **ETag calculado en
+build time** desde el manifiesto. Cuando Vite reescribe el archivo sin que
+pase `dotnet build`, el ETag no cambia: el navegador revalida, el servidor
+responde `304 Not Modified` y te quedas viendo el CSS viejo. Probado con
+`curl`: mismo ETag antes y después del cambio, y 304 al revalidar.
+
+`dotnet watch` lo enmascara porque su script de browser-refresh recarga el
+`<link>` con un query string, pero con `dotnet run` o el botón Run del IDE
+el bug es seguro.
+
+La solución en `Program.cs`: en Development, servir `dist/` con
+`UseStaticFiles`, que calcula el ETag por archivo en cada request, y dejar
+`MapStaticAssets` para todo lo demás:
+
+```csharp
+using Microsoft.Extensions.FileProviders;
+
+app.UseHttpsRedirection();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.WebRootPath, "dist")),
+        RequestPath = "/dist"
+    });
+}
+
+app.UseRouting();
+```
+
+**Tiene que ir antes de `UseRouting()`**, no basta con ponerlo antes de
+`MapStaticAssets()`. `UseRouting` elige el endpoint del manifiesto para
+`/dist/main.css`, y `StaticFileMiddleware` se salta cualquier request que ya
+tenga endpoint asignado; puesto después de `UseRouting` no hace nada (probado:
+mismo ETag y 304). Antes de `UseRouting` intercepta `/dist/*` y responde con
+el archivo real. En Release no entra y `MapStaticAssets` sirve las rutas con
+fingerprint e `immutable`.
 
 ## Escribir estilos propios
 
