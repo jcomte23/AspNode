@@ -15,6 +15,7 @@
     <ItemGroup>
       <_ContentIncludedByDefault Remove="wwwroot\dist\main.css" />
       <_ContentIncludedByDefault Remove="wwwroot\dist\main.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\js\site.js" />
     </ItemGroup>
 
     <Target Name="BuildFrontend" BeforeTargets="BeforeBuild">
