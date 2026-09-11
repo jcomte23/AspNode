@@ -1,25 +1,31 @@
-﻿@model ErrorViewModel
+@model ErrorViewModel
 @{
     ViewData["Title"] = "Error";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<div class="mx-auto max-w-2xl text-center">
+    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100 text-red-600">
+        <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+    </div>
+    <h1 class="mt-6 text-3xl font-bold tracking-tight text-slate-900">Ocurrió un error</h1>
+    <p class="mt-3 text-slate-600">Se produjo un problema al procesar tu solicitud.</p>
 
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
-}
+    @if (Model.ShowRequestId)
+    {
+        <p class="mt-6 inline-flex items-center gap-2 rounded-lg bg-slate-100 px-4 py-2 text-sm text-slate-700">
+            <strong>Request ID:</strong> <code class="font-mono text-xs">@Model.RequestId</code>
+        </p>
+    }
 
-<h3>Development Mode</h3>
-<p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
-</p>
-<p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-    and restarting the app.
-</p>
+    <div class="mt-10 rounded-2xl border border-amber-200 bg-amber-50 p-6 text-left text-sm text-amber-900">
+        <h3 class="font-semibold">Modo Development</h3>
+        <p class="mt-2">Cambiar al entorno <strong>Development</strong> mostrará información más detallada sobre el error.</p>
+        <p class="mt-2">
+            <strong>El entorno Development no debe habilitarse en aplicaciones desplegadas.</strong>
+            Puede exponer información sensible de las excepciones a los usuarios finales. Para depuración local, establece la variable de entorno
+            <code class="rounded bg-amber-100 px-1 font-mono text-xs">ASPNETCORE_ENVIRONMENT</code> en <strong>Development</strong> y reinicia la app.
+        </p>
+    </div>
+
+    <a asp-controller="Home" asp-action="Index" class="mt-8 inline-block rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">Volver al inicio</a>
+</div>

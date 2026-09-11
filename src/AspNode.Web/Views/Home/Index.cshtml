@@ -1,8 +1,65 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@{
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 via-indigo-500 to-violet-600 px-6 py-16 text-white shadow-xl sm:px-12 sm:py-24">
+    <div class="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-white/10 blur-3xl"></div>
+    <div class="pointer-events-none absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-violet-300/20 blur-3xl"></div>
+    <div class="relative max-w-2xl">
+        <span class="inline-flex items-center rounded-full bg-white/15 px-3 py-1 text-xs font-medium uppercase tracking-wider">ASP.NET Core + Vite + Tailwind</span>
+        <h1 class="mt-5 text-4xl font-extrabold tracking-tight sm:text-5xl">Bienvenido a AspNode</h1>
+        <p class="mt-4 text-lg text-indigo-100">
+            Una base moderna para construir aplicaciones web con Razor, empaquetado con Vite y estilizado con Tailwind CSS.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+            <a href="https://learn.microsoft.com/aspnet/core" target="_blank" rel="noopener" class="rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-indigo-700 shadow-sm transition hover:bg-indigo-50">Empezar</a>
+            <a asp-controller="Home" asp-action="Privacy" class="rounded-lg border border-white/40 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10">Ver privacidad</a>
+        </div>
+    </div>
+</section>
+
+<section class="mt-14">
+    <h2 class="text-2xl font-bold tracking-tight text-slate-900">¿Qué incluye este proyecto?</h2>
+    <p class="mt-2 text-slate-600">Todo lo necesario para arrancar rápido sin arrastrar dependencias innecesarias.</p>
+
+    <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <article class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+            <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-100 text-indigo-600">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+            <h3 class="mt-4 text-lg font-semibold text-slate-900">ASP.NET Core MVC</h3>
+            <p class="mt-2 text-sm text-slate-600">Controladores, vistas Razor y tag helpers listos para usar con la estructura estándar de .NET.</p>
+        </article>
+
+        <article class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+            <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-100 text-amber-600">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <h3 class="mt-4 text-lg font-semibold text-slate-900">Vite</h3>
+            <p class="mt-2 text-sm text-slate-600">Compilación de assets ultrarrápida que genera <code class="rounded bg-slate-100 px-1 text-xs">wwwroot/dist</code> en modo watch.</p>
+        </article>
+
+        <article class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+            <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-sky-100 text-sky-600">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h10M4 18h6"/></svg>
+            </div>
+            <h3 class="mt-4 text-lg font-semibold text-slate-900">Tailwind CSS v4</h3>
+            <p class="mt-2 text-sm text-slate-600">Utilidades escaneadas directamente desde las vistas Razor; sin CSS muerto ni Bootstrap.</p>
+        </article>
+    </div>
+</section>
+
+<section class="mt-14 grid gap-4 rounded-2xl border border-slate-200 bg-white p-6 sm:grid-cols-3 sm:p-8">
+    <div class="text-center">
+        <p class="text-3xl font-extrabold text-indigo-600">0 KB</p>
+        <p class="mt-1 text-sm text-slate-500">de Bootstrap</p>
+    </div>
+    <div class="text-center">
+        <p class="text-3xl font-extrabold text-indigo-600">1</p>
+        <p class="mt-1 text-sm text-slate-500">comando para compilar</p>
+    </div>
+    <div class="text-center">
+        <p class="text-3xl font-extrabold text-indigo-600">100%</p>
+        <p class="mt-1 text-sm text-slate-500">responsive</p>
+    </div>
+</section>
