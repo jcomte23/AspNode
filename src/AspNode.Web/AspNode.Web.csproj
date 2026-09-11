@@ -6,4 +6,20 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
+    <ItemGroup>
+        <Content Remove="node_modules/**" />
+        <None Remove="node_modules/**" />
+        <Watch Remove="Assets/**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\dist\main.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\dist\main.js" />
+    </ItemGroup>
+
+    <Target Name="BuildFrontend" BeforeTargets="BeforeBuild">
+        <Exec Command="npm ci" Condition="!Exists('node_modules')" />
+        <Exec Command="npm run build" />
+    </Target>
+
 </Project>
