@@ -161,8 +161,13 @@ archivos de `node_modules` en cada build y se arrastra.
 
 ```
 node_modules/
-wwwroot/dist/
+**/wwwroot/dist/
 ```
+
+El `**/` importa si el `.gitignore` está en la raíz del repo y no junto al
+`.csproj`. Un patrón con `/` en medio (`wwwroot/dist/`) Git lo interpreta
+relativo a la carpeta del `.gitignore`, así que solo coincidiría con
+`./wwwroot/dist/` y no con `src/AspNode.Web/wwwroot/dist/`.
 
 Todo lo demás sí va versionado: `package.json`, `package-lock.json`,
 `vite.config.js` y `Assets/` completa.
